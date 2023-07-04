@@ -45,32 +45,13 @@ document.getElementById("fileInput").addEventListener("change", function (e) {
       const oldUsername = result.oldUsername;
       const data = result.data;
       const removedCount = result.removedCount;
-      const removedData = result.removedData;
+      extractedData = extractData(text);
 
       // Check if Old Username and New Username are the same
       if (oldUsername === newUsername) {
         alert("Old Username and New Username cannot be the same");
         return;
       }
-
-      document
-        .getElementById("showRemovedData")
-        .addEventListener("click", function () {
-          const newTab = window.open();
-          newTab.document.title = "Removed Data";
-          newTab.document.body.innerHTML =
-            `<ul>${removedData
-              .map((item) => `<li>${item}</li>`)
-              .join("")}</ul>`;
-          const style = newTab.document.createElement("style");
-          style.textContent = `
-          body {
-            background-color: #343a40;
-            color: #fff;
-          }
-        `;
-          newTab.document.head.appendChild(style);
-        });
 
       document.getElementById("oldUsername").value = oldUsername;
 
