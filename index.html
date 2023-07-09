@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Home Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<style>
+    video#bgvid {
+        position: fixed;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        min-height: 100%;
+        z-index: -1;
+    }
+
+    div#btn-custom-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(0, 0, 0, 0.5);
+  max-width: 40%; 
+  border: 2px solid transparent;
+  border-image: linear-gradient(to right, #ef32d9, #89fffd);
+  border-image-slice: 1;
+  border-radius: 10px;
+}
+
+    .btn-custom {
+        background-image: linear-gradient(to right, #ef32d9 0%, #89fffd 51%, #ef32d9 100%);
+        margin: 0 5px;
+    }
+</style>
+
+</head>
+
+<body data-bs-theme="dark">
+    <video autoplay loop muted id="bgvid">
+        <source src="../background/minecraft.mp4" type="video/mp4" />
+    </video>
+
+
+    <div id="btn-custom-container" class="container d-flex justify-content-center align-items-center p-3">
+        <div>
+            <h2 class="text-center">Select a Page</h2>
+            <div class="btn-group">
+                <a href="./pages/scoreboard.html" class="btn btn-primary btn-custom text-black fw-bold">Scoreboard
+                    Data</a>
+                <a href="./pages/inventory.html" class="btn btn-primary btn-custom text-black fw-bold">Inventory
+                    Data</a>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
