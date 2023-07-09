@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Transfer Data</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous" />
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+
+</head>
+
+<style>
+  video#bgvid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    z-index: -1;
+  }
+
+  .container-fluid#main {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+</style>
+</head>
+
+<body data-bs-theme="dark">
+  <video autoplay loop muted id="bgvid">
+    <source src="../background/minecraft.mp4" type="video/mp4" />
+  </video>
+
+  <div class="container-fluid my-3 mx-auto w-50 rounded p-1" id="main">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label for="oldUsername" class="form-label">Old Username:</label>
+          <input type="text" class="form-control" id="oldUsername" placeholder="This will be added Automatically"
+            readonly />
+        </div>
+        <div class="mb-3">
+          <label for="fileInput" class="form-label">Select File:</label>
+          <input type="file" class="form-control" id="fileInput" />
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <label for="newUsername" class="form-label">New Username:</label>
+          <input type="text" class="form-control" id="newUsername" />
+        </div>
+        <button id="showRemovedData" class="btn btn-danger btn-sm">
+          Show Removed Data
+        </button>
+        <h6>
+          Number of removed lines:
+          <span id="removedCount" class="badge text-bg-danger"></span>
+        </h6>
+        <h6>
+          Number of lines to transfer:
+          <span id="rowCount" class="badge text-bg-success"></span>
+        </h6>
+      </div>
+    </div>
+
+    <div id="outputTableContainer" class="container p-1">
+      <table class="table table-dark table-striped" id="outputTable">
+        <thead>
+          <tr>
+            <th>Copy</th>
+            <th>Command</th>
+          </tr>
+        </thead>
+        <tbody id="output"></tbody>
+      </table>
+    </div>
+
+    <div id="howToUseContainer" class="container-fluid my-3 mx-auto p-1 rounded">
+      <h2 class="text-center">How to use</h2>
+      <div class="alert alert-danger" role="alert">
+        Please make sure that only ONE players scoreboard data is in your <span class="fw-bold">latest.log</span> file!
+        If more than one players data is present in your log file please copy the relevant data and place that in a .txt
+        file to be uploaded
+      </div>
+
+      <div class="alert alert-light" role="alert">
+        - Navigate to your <span class="fw-bold">latest.log</span> file. <span class="badge bg-secondary">More info
+          Below</span><br>
+        - Make sure the <span class="text-decoration-underline">Old Username</span> is correct once you upload the <span
+          class="fw-bold">latest.log</span> file!<br><br>
+        Log Folder:<br>
+        <span class="fw-bold">Windows:</span> Type %appdata% in the address bar of the Windows Explorer. Then open the
+        .minecraft folder.<br>
+        <span class="fw-bold">Mac:</span> Press Cmd+Shift+G then type: ~/Library/Application Support/minecraft in the
+        search box.<br><br>
+        In your logs folder there will be a file called <span class="fw-bold">latest.log</span> use that one.
+      </div>
+    </div>
+
+
+    <script src="../script/scoreboard_script.js"></script>
+</body>
+
+</html>
