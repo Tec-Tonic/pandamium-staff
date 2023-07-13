@@ -1,39 +1,6 @@
 let inventoryData = [];
 let data = ``;
-let redBackgroundItems = [
-  "coal_ore",
-  "deepslate_coal_ore",
-  "coal",
-  "iron_ore",
-  "deepslate_iron_ore",
-  "iron_ingot",
-  "copper_ore",
-  "deepslate_copper_ore",
-  "raw_copper",
-  "copper_ingot",
-  "gold_ore",
-  "deepslate_gold_ore",
-  "gold_ingot",
-  "raw_gold",
-  "gold_nugget",
-  "redstone_ore",
-  "deepslate_redstone_ore",
-  "redstone",
-  "emerald_ore",
-  "deepslate_emerald_ore",
-  "emerald",
-  "lapis_ore",
-  "deepslate_lapis_ore",
-  "lapis_lazuli",
-  "diamond_ore",
-  "deepslate_diamond_ore",
-  "diamond",
-  "nether_gold_ore",
-  "nether_quartz_ore",
-  "quartz",
-  "ancient_debri",
-  "netherite_scrap",
-];
+let redBackgroundItems = [];
 
 window.onload = function () {
   document
@@ -50,30 +17,56 @@ window.onload = function () {
 };
 
 function processData() {
+  console.log(data);
   data = data.replace(/\?/g, "");
   const namelines = data.split("\n");
   let name = "";
 
-  for (const line of namelines) {
-    if (line.includes("Player:")) {
-      name = line.substring(line.indexOf("Player:") + "Player:".length).trim();
+  // Find the last occurrence of "======== Inventory Contents ========\\nPlayer:"
+  for (let i = namelines.length - 1; i >= 0; i--) {
+    if (namelines[i].includes("======== Inventory Contents ========\\nPlayer:")) {
+      name = namelines[i]
+        .substring(namelines[i].indexOf("Player:") + "Player:".length)
+        .trim();
       break;
     }
   }
+  console.log(name);
+
   const element = `<h1 class="text-center">${name}'s Inventory</h1>`;
   document.getElementById("nameContainer").innerHTML = element;
 
   let lines = data.split("\n");
 
+  // Find the index of the last occurrence of "======== Inventory Contents ========"
+  let startIndex;
+  for (let i = lines.length - 1; i >= 0; i--) {
+    if (lines[i].includes("======== Inventory Contents ========")) {
+      startIndex = i;
+      break;
+    }
+  }
+
+  // Only process lines after the last occurrence of "======== Inventory Contents ========"
+  lines = lines.slice(startIndex);
+
   let inventory = [];
 
   for (let i = 0; i < lines.length; i++) {
-    if (lines[i].includes("hotbar.") || lines[i].includes("inventory.")) {
+    if (
+      lines[i].includes("hotbar.") ||
+      lines[i].includes("inventory.") ||
+      lines[i].includes("armor.feet") ||
+      lines[i].includes("armor.legs") ||
+      lines[i].includes("armor.chest") ||
+      lines[i].includes("armor.head") ||
+      lines[i].includes("weapon.offhand")
+    ) {
       let parts = lines[i].split(": ");
       let item = parts[2].split(" ");
       let quantity = item.shift();
       item = item.join(" ");
-      
+
       let itemParts = item.split(" ");
       let nbtIndex = itemParts.indexOf("[NBT]");
       let itemNameAfterNbt;
@@ -83,13 +76,13 @@ function processData() {
       } else {
         itemNameAfterNbt = itemParts.slice(1).join(" ");
       }
-      
+
       let minecraftItemName = itemParts[0].trim();
-      
+
       if (itemNameAfterNbt) {
         minecraftItemName = minecraftItemName.replace(itemNameAfterNbt, "").trim();
       }
-      
+
       if (minecraftItemName.endsWith("s")) {
         minecraftItemName = minecraftItemName.slice(0, -1);
       }
@@ -116,4 +109,3 @@ function initializeTooltips() {
     new bootstrap.Tooltip(tooltipTriggerEl);
   });
 }
-
