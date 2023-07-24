@@ -1,0 +1,129 @@
+body {
+    background-color: #36393f;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.message {
+    display: flex;
+    align-items: flex-start;
+    margin: 10px auto;
+    justify-content: center;
+
+}
+
+.message-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.message-content {
+    flex-grow: 1;
+}
+
+.message-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2px;
+}
+
+.message-username {
+    font-weight: bold;
+    margin-right: 5px;
+    color: #05AB35;
+}
+
+.message-timestamp {
+    color: #72767d;
+    font-size: 12px;
+}
+
+.embed {
+    border-radius: 5px;
+    border: 1px solid #2f3136;
+    padding: 10px;
+    font-family: Whitney, Arial, sans-serif;
+    font-size: 14px;
+    position: relative;
+    color: white;
+    background-color: #2f3136;
+    max-width: 520px;
+}
+
+.embed:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.embed-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.embed-description {
+    white-space: pre-line;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    line-height: 1.3em;
+    overflow-y: hidden;
+    /* hide overflow */
+    text-overflow: ellipsis;
+    /* add ellipsis */
+    display: -webkit-box;
+    /* create a block box */
+    -webkit-box-orient: vertical;
+    /* set box orientation */
+}
+
+.embed-description a {
+    color: #00b0f4;
+    text-decoration: none;
+}
+
+.embed-code {
+    display: inline-block;
+    padding: 3px 5px;
+    margin: 0 2px;
+    font-family: Consolas, monospace;
+    font-size: 12px;
+    background-color: #2f3136;
+    color: #fff;
+}
+
+#file-input {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+#json-input {
+    width: 100%;
+    height: 300px;
+    margin: 0 auto;
+    display: block;
+    white-space: pre-wrap;
+    font-family: monospace;
+    background-color: lightgrey;
+  }
+
+  .emoji-sizer {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
+  }

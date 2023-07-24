@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Discord Embeds</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="../css/embed.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div
+        id="file-input"
+        class="container-fluid my-3 mx-auto w-50 rounded p-1"
+      >
+        <h2 class="text-center text-white">Upload file</h2>
+        <label for="fileInput" class="form-label text-white"
+          >Select File:</label
+        >
+        <input type="file" class="form-control" id="fileInput" />
+      </div>
+
+      <textarea id="json-input"></textarea>
+      <button id="download-button">Download</button>
+
+      <div id="messages-container" class="mb-5"></div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/emoji-js@3"></script>
+
+
+    <script>
+      const fileInput = document.getElementById("fileInput");
+
+      fileInput.addEventListener("change", () => {
+        const file = fileInput.files[0];
+        const reader = new FileReader();
+
+        reader.onload = () => {
+          const fileContents = reader.result;
+          const jsonData = JSON.parse(fileContents);
+          data.push(...jsonData);
+          updateMessages();
+          jsonInput.value = JSON.stringify(jsonData, null, 2);
+        };
+
+        reader.readAsText(file);
+      });
+
+      const data = [];
+
+      const jsonInput = document.getElementById("json-input");
+
+      jsonInput.addEventListener("input", () => {
+        try {
+          const newData = JSON.parse(jsonInput.value);
+          data.length = 0;
+          data.push(...newData);
+          updateMessages();
+        } catch (error) {
+          console.error(error);
+        }
+      });
+      const downloadButton = document.getElementById("download-button");
+
+      downloadButton.addEventListener("click", () => {
+        const text = jsonInput.value;
+        const blob = new Blob([text], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "data.json";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      async function replaceEmojiCodes(input) {
+        const matches = input.match(/:[a-z_]+:/g);
+        if (!matches) return input;
+
+        const uniqueMatches = [...new Set(matches)];
+        const promises = uniqueMatches.map((match) =>
+          fetch(`https://emojiapi.dev/api/v1/${match.slice(1, -1)}.svg`)
+        );
+        const responses = await Promise.all(promises);
+
+        const replacements = {};
+        for (let i = 0; i < responses.length; i++) {
+          if (responses[i].ok) {
+            const text = await responses[i].text();
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(text, "image/svg+xml");
+            const emoji = doc.querySelector("text").textContent;
+            replacements[uniqueMatches[i]] = emoji;
+          }
+        }
+
+        return input.replace(
+          /:[a-z_]+:/g,
+          (match) => replacements[match] || match
+        );
+      }
+
+      const messagesContainer = document.getElementById("messages-container");
+      
+        const emoji = new EmojiConvertor();
+        emoji.img_sets.apple.path = 'https://cdn.jsdelivr.net/gh/iamcal/emoji-data@master/img-apple-64/';
+
+      function updateMessages() {
+        messagesContainer.innerHTML = "";
+
+        data.forEach((messageData, index) => {
+          const message = document.createElement("div");
+          message.classList.add("message");
+
+          const content = document.createElement("div");
+          content.classList.add("message-content");
+
+          if (index === 0) {
+            const avatar = document.createElement("img");
+            avatar.classList.add("message-avatar");
+            avatar.src =
+              "https://cdn.discordapp.com/attachments/1095292876730155088/1131741432596680814/pandamium_logo512.png";
+            message.appendChild(avatar);
+
+            const header = document.createElement("div");
+            header.classList.add("message-header");
+
+            const username = document.createElement("div");
+            username.classList.add("message-username");
+            username.textContent = "Pandamium Jr.";
+            header.appendChild(username);
+
+            const timestamp = document.createElement("div");
+            timestamp.classList.add("message-timestamp");
+            timestamp.textContent = new Date().toLocaleString();
+            header.appendChild(timestamp);
+
+            content.appendChild(header);
+
+            const embedData = messageData;
+
+            const embed = document.createElement("div");
+            embed.classList.add("embed");
+
+            if (embedData.color) {
+              embed.style.borderLeftColor = `#${embedData.color}`;
+              const styleElement = document.createElement("style");
+              styleElement.textContent = `.embed:before { background-color:#${embedData.color}; }`;
+              document.head.appendChild(styleElement);
+            }
+
+            if (embedData.title) {
+              const title = document.createElement("div");
+              title.classList.add("embed-title");
+              title.textContent = embedData.title;
+              embed.appendChild(title);
+            }
+
+            if (embedData.description) {
+              const description = document.createElement("div");
+              description.classList.add("embed-description");
+
+              const descriptionWithEmojis = emoji.replace_colons(
+                embedData.description
+              );
+              description.innerHTML = descriptionWithEmojis
+                .replace(/\n/g, "<br>")
+                .replace(
+                  /<#(\d{18})>/g,
+                  '<a href="#" class="channel-link">#Channel</a>'
+                )
+                .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
+                .replace(/__(.+?)__/g, "<u>$1</u>")
+                .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+                .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+                .replace(/\*(.+?)\*/g, "<em>$1</em>")
+                .replace(/~~(.+?)~~/g, "<s>$1</s>")
+                .replace(/`(.+?)`/g, '<span class="embed-code">$1</span>');
+              embed.appendChild(description);
+            }
+
+            content.appendChild(embed);
+
+            message.appendChild(content);
+          } else {
+            const spacer = document.createElement("div");
+            spacer.style.width = "50px";
+            message.appendChild(spacer);
+
+            const embedData = messageData;
+
+            const embed = document.createElement("div");
+            embed.classList.add("embed");
+
+            if (embedData.color) {
+              embed.style.borderLeftColor = `#${embedData.color}`;
+              const styleElement = document.createElement("style");
+              styleElement.textContent = `.embed:before { background-color:#${embedData.color}; }`;
+              document.head.appendChild(styleElement);
+            }
+
+            if (embedData.title) {
+              const title = document.createElement("div");
+              title.classList.add("embed-title");
+              title.textContent = embedData.title;
+              embed.appendChild(title);
+            }
+
+            if (embedData.description) {
+              const description = document.createElement("div");
+              description.classList.add("embed-description");
+
+              const descriptionWithEmojis = emoji.replace_colons(
+                embedData.description
+              );
+
+              description.innerHTML = descriptionWithEmojis
+                .replace(/\n/g, "<br>")
+                .replace(
+                  /<#(\d{18})>/g,
+                  '<a href="#" class="channel-link">#Channel</a>'
+                )
+                .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2">$1</a>')
+                .replace(/__(.+?)__/g, "<u>$1</u>")
+                .replace(/\*\*\*(.+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+                .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+                .replace(/\*(.+?)\*/g, "<em>$1</em>")
+                .replace(/~~(.+?)~~/g, "<s>$1</s>")
+                .replace(/`(.+?)`/g, '<span class="embed-code">$1</span>');
+              embed.appendChild(description);
+            }
+
+            content.appendChild(embed);
+
+            message.appendChild(content);
+          }
+
+          messagesContainer.appendChild(message);
+        });
+      }
+    </script>
+  </body>
+</html>

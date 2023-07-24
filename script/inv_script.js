@@ -1,6 +1,39 @@
 let inventoryData = [];
 let data = ``;
-let redBackgroundItems = [];
+let redBackgroundItems = [
+  "coal_ore",
+  "deepslate_coal_ore",
+  "coal",
+  "iron_ore",
+  "deepslate_iron_ore",
+  "iron_ingot",
+  "copper_ore",
+  "deepslate_copper_ore",
+  "raw_copper",
+  "copper_ingot",
+  "gold_ore",
+  "deepslate_gold_ore",
+  "gold_ingot",
+  "raw_gold",
+  "gold_nugget",
+  "redstone_ore",
+  "deepslate_redstone_ore",
+  "redstone",
+  "emerald_ore",
+  "deepslate_emerald_ore",
+  "emerald",
+  "lapis_ore",
+  "deepslate_lapis_ore",
+  "lapis_lazuli",
+  "diamond_ore",
+  "deepslate_diamond_ore",
+  "diamond",
+  "nether_gold_ore",
+  "nether_quartz_ore",
+  "quartz",
+  "ancient_debri",
+  "netherite_scrap",
+];
 
 window.onload = function () {
   document
@@ -17,12 +50,11 @@ window.onload = function () {
 };
 
 function processData() {
-  console.log(data);
   data = data.replace(/\?/g, "");
   const namelines = data.split("\n");
   let name = "";
 
-  // Find the last occurrence of "======== Inventory Contents ========\\nPlayer:"
+  
   for (let i = namelines.length - 1; i >= 0; i--) {
     if (namelines[i].includes("======== Inventory Contents ========\\nPlayer:")) {
       name = namelines[i]
@@ -31,14 +63,13 @@ function processData() {
       break;
     }
   }
-  console.log(name);
 
   const element = `<h1 class="text-center">${name}'s Inventory</h1>`;
   document.getElementById("nameContainer").innerHTML = element;
 
   let lines = data.split("\n");
 
-  // Find the index of the last occurrence of "======== Inventory Contents ========"
+  
   let startIndex;
   for (let i = lines.length - 1; i >= 0; i--) {
     if (lines[i].includes("======== Inventory Contents ========")) {
@@ -47,7 +78,7 @@ function processData() {
     }
   }
 
-  // Only process lines after the last occurrence of "======== Inventory Contents ========"
+  
   lines = lines.slice(startIndex);
 
   let inventory = [];
@@ -98,6 +129,7 @@ function processData() {
   inventoryData = inventory;
   updateInventoryDisplay();
 
+  initializeTooltips();
   initializeTooltips();
 }
 
