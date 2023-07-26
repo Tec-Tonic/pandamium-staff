@@ -24,6 +24,11 @@ function extractData(text) {
   return { oldUsername, data, removedCount, removedData };
 }
 
+window.addEventListener("load", function () {
+  var load_screen = document.getElementById("loading-wrapper");
+  document.body.removeChild(load_screen);
+});
+
 document.getElementById("fileInput").addEventListener("change", function (e) {
   const file = e.target.files[0];
   if (!file) {

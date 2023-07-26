@@ -8,6 +8,24 @@ body {
     align-items: center;
 }
 
+.home-button {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 24px;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px; 
+}
+
+
 .message {
     display: flex;
     align-items: flex-start;
@@ -116,9 +134,9 @@ body {
     white-space: pre-wrap;
     font-family: monospace;
     background-color: lightgrey;
-  }
+}
 
-  .emoji-sizer {
+.emoji-sizer {
     display: inline-block;
     width: 1em;
     height: 1em;
@@ -126,4 +144,4 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     vertical-align: middle;
-  }
+}
